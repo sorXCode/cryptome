@@ -10,12 +10,13 @@ from flask_login import LoginManager
 from flask_babelex import Babel
 from config import config
 from flask_user import UserManager
-
+from coinbase_commerce.client import Client
 
 db = SQLAlchemy()
 login_manager = LoginManager()
 login_manager.login_view = "/"
 babel = Babel()
+coinbase_client = Client(os.environ["COINBASE_APIKEY"])
 
 
 def create_app(environment):
@@ -29,8 +30,10 @@ def create_app(environment):
     
     def register_blueprints(app):
         from user.views import user_bp
+        from payments.views import payment_bp
 
         app.register_blueprint(user_bp)
+        app.register_blueprint(payment_bp)
 
     app = Flask(__name__)
     app.config.from_object(config[environment])

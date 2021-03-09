@@ -5,6 +5,37 @@
     <p><a href={{ url_for('user.register') }}>{%trans%}Register{%endtrans%}</a></p>
     <p><a href={{ url_for('user.login') }}>{%trans%}Sign in{%endtrans%}</a></p>
     {% else %}
-    <h2>{%trans%}You're logged in{%endtrans%}</h2>
-    {% endif %}
-{% endblock %}
+    <h2>{%trans%}You don't have an active subscription, click button below to subscribe{%endtrans%}</h2>
+    <div>
+        <a class="buy-with-crypto"
+           href="https://commerce.coinbase.com/checkout/{{ checkout['id'] }}">
+           {{ checkout['description'] }} {{ checkout['local_price']['amount'] }} {{  checkout['local_price']['currency'] }}
+          </a>
+          <script src="https://commerce.coinbase.com/v1/checkout.js?version=201807">
+          </script>
+        </div>
+      <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+      <script>
+        saveDetails = (data) => {
+          const _data = {
+            ...data,
+            amount: "{{checkout['local_price']['amount']}}",
+            currency: "{{checkout['local_price']['currency']}}",
+            checkout_id: "{{checkout['id']}}",
+            user_id: "{{current_user.id}}"
+          }
+          $.ajax("/subscriptions/log", {
+                  data: JSON.stringify(_data),
+                  method: "POST",
+                  contentType: "application/json"
+          })
+        }
+          
+        
+      BuyWithCrypto.registerCallback("onFailure", function(data){
+        console.log("Canceled")
+        saveDetails(data)
+      })
+    </script>
+        {% endif %}
+        {% endblock %}
