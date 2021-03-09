@@ -4,7 +4,7 @@
     <h2>{%trans%}Home page{%endtrans%}</h2>
     <p><a href={{ url_for('user.register') }}>{%trans%}Register{%endtrans%}</a></p>
     <p><a href={{ url_for('user.login') }}>{%trans%}Sign in{%endtrans%}</a></p>
-    {% else %}
+    {% elif not current_user.has_active_subscription() %}
     <h2>{%trans%}You don't have an active subscription, click button below to subscribe{%endtrans%}</h2>
     <div>
         <a class="buy-with-crypto"
@@ -30,12 +30,12 @@
                   contentType: "application/json"
           })
         }
-          
         
-      BuyWithCrypto.registerCallback("onFailure", function(data){
-        console.log("Canceled")
+      BuyWithCrypto.registerCallback("onComplete", function(data){
         saveDetails(data)
       })
     </script>
-        {% endif %}
-        {% endblock %}
+    {% else %}
+    <p>This is the dashboard</p>
+    {% endif %}
+    {% endblock %}
