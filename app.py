@@ -48,3 +48,14 @@ def create_app(environment):
 #set FLASK_CONFIG to switch environment;
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 migrate = Migrate(app, db)
+
+
+from flask_login import user_logged_in, user_logged_out
+
+@user_logged_in.connect_via(app)
+def _after_login_hook(sender, user, **extra):
+    user.update_last_login()
+
+@user_logged_out.connect_via(app)
+def _after_logout_hook(sender, user, **extra):
+    user.update_logout()

@@ -23,7 +23,21 @@ class User(db.Model, UserMixin):
                           nullable=True, server_default='')
     subscription = db.relationship(
         "Subscription", backref="user", lazy="dynamic")
+    is_logged_in = db.Column(db.Boolean, default=False)
+    last_login = db.Column(db.DateTime)
 
     def has_active_subscription(self):
         from subscriptions.models import Subscription
         return self.subscription.filter(Subscription.ends >= datetime.today()).first()
+    
+    def update_logout(self):
+        self.is_logged_in = False
+        self.save()
+    
+    def update_last_login(self):
+        self.last_login = datetime.now()
+        self.save()
+        
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
