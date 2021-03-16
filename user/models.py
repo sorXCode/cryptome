@@ -1,6 +1,9 @@
 from flask_user import UserMixin
 from app import db
 from datetime import datetime
+from app import login_manager
+from flask_user import PasswordManager
+from flask import current_app
 
 
 class User(db.Model, UserMixin):
@@ -30,14 +33,30 @@ class User(db.Model, UserMixin):
         from subscriptions.models import Subscription
         return self.subscription.filter(Subscription.ends >= datetime.today()).first()
     
+    
+    def can_be_logged_in(self):
+        if not self.is_logged_in:
+            return True
+        return False
+
     def update_logout(self):
         self.is_logged_in = False
         self.save()
     
     def update_last_login(self):
+        if self.is_logged_in:
+            return None
         self.last_login = datetime.now()
+        self.is_logged_in = True
         self.save()
         
     def save(self):
         db.session.add(self)
         db.session.commit()
+
+
+@login_manager.user_loader
+def _load_user(token):
+    user = User.get_user_by_token(token)
+    user.update_last_login()
+    return user

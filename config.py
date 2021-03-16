@@ -21,6 +21,8 @@ class Development:
     USER_ENABLE_EMAIL = False      # Disable email authentication
     USER_ENABLE_USERNAME = True    # Enable username authentication
     USER_REQUIRE_RETYPE_PASSWORD = False    # Simplify register form
+    USER_LOGIN_URL = '/signin'
+    USER_LOGOUT_URL = '/logout'
 
 
 class Test:

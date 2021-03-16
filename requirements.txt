@@ -7,3 +7,4 @@ flask-babelex==0.9.4
 coinbase-commerce==1.0.1
 pyopenssl==20.0.1
 SQLAlchemy-JSONField==1.0.0
+is-safe-url==1.0
