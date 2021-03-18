@@ -18,11 +18,19 @@ class Development:
         'sqlite:///' + os.path.join(basedir, 'development_db.sqlite')
     # Flask-User settings
     USER_APP_NAME = "Cryptome"      # Shown in and email templates and page footers
+    USER_APP_EMAIL = "Cryptome"      # Shown in and email templates and page footers
     USER_ENABLE_EMAIL = False      # Disable email authentication
     USER_ENABLE_USERNAME = True    # Enable username authentication
     USER_REQUIRE_RETYPE_PASSWORD = False    # Simplify register form
     USER_LOGIN_URL = '/signin'
     USER_LOGOUT_URL = '/logout'
+    USER_REGISTER_URL = '/register'
+    USER_ENABLE_INVITE_USER = True
+    USER_ENABLE_EMAIL = True
+    USER_EMAIL_SENDER_EMAIL = "sorxcode@gmail.com"
+    SENDGRID_API_KEY = os.environ["SENDGRID_API_KEY"]
+    MAIL_DEFAULT_SENDER = os.environ['MAIL_DEFAULT_SENDER']
+
 
 
 class Test:

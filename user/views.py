@@ -57,7 +57,10 @@ def custom_login():
         return redirect(next or url_for('.index'))
     return render_template('flask_user/login.html', login_form=form, form=form)
     
-
+# @user.route("/onboard")
+# def onboard():
+#     referral = request.args.get("referral")
+#     return render_template("onboard.html", referral=referral)
 
 @user.route("/")
 def index():

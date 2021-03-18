@@ -8,3 +8,4 @@ coinbase-commerce==1.0.1
 pyopenssl==20.0.1
 SQLAlchemy-JSONField==1.0.0
 is-safe-url==1.0
+sendgrid==5.6.0
