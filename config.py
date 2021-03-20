@@ -27,9 +27,9 @@ class Development:
     USER_REGISTER_URL = '/register'
     USER_ENABLE_INVITE_USER = True
     USER_ENABLE_EMAIL = True
-    USER_EMAIL_SENDER_EMAIL = "sorxcode@gmail.com"
-    SENDGRID_API_KEY = os.environ["SENDGRID_API_KEY"]
     MAIL_DEFAULT_SENDER = os.environ['MAIL_DEFAULT_SENDER']
+    USER_EMAIL_SENDER_EMAIL = os.environ['MAIL_DEFAULT_SENDER']
+    SENDGRID_API_KEY = os.environ["SENDGRID_API_KEY"]
 
 
 
