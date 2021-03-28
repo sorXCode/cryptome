@@ -3,18 +3,19 @@ from dotenv import load_dotenv
 # load envrionment variables from '.env' file
 load_dotenv()
 
+
 from flask_login import user_logged_in, user_logged_out
 from datetime import timedelta
 from coinbase_commerce.client import Client
-from flask_user import (UserManager, SQLAlchemyAdapter)
+from flask_user import (SQLAlchemyAdapter)
 from config import config
 from flask_babelex import Babel
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, session
+from flask import Flask, session, url_for
 from flask_migrate import Migrate
 import os
-
+from pprint import pprint
 
 
 db = SQLAlchemy()
@@ -27,6 +28,7 @@ coinbase_client = Client(os.environ["COINBASE_APIKEY"])
 def create_app(environment):
     def init_dependencies(app):
         from user import models
+        from user.views import CustomUserManager as UserManager
 
         login_manager.init_app(app)
         db.init_app(app)
@@ -87,15 +89,22 @@ def _after_logout_hook(sender, user, **extra):
         pass
 
 
-def before_user_blueprint():
-    from flask import request, current_app, redirect, url_for
-    if request.path == current_app.config["USER_LOGIN_URL"]:
-        return redirect(url_for("user.custom_login"))
-    # if request.path == current_app.config["USER_REGISTER_URL"]:
-    #     return redirect(url_for("user.onboard"))
+def has_no_empty_params(rule):
+    defaults = rule.defaults if rule.defaults is not None else ()
+    arguments = rule.arguments if rule.arguments is not None else ()
+    return len(defaults) >= len(arguments)
 
 
-app.before_request_funcs = {
-    # blueprint name: [list_of_functions]
-    'user': [before_user_blueprint, ]
-}
+@app.route("/site-map")
+def site_map():
+    links = []
+    for rule in app.url_map.iter_rules():
+        # Filter out rules we can't navigate to in a browser
+        # and rules that require parameters
+        if "GET" in rule.methods and has_no_empty_params(rule):
+            url = url_for(rule.endpoint, **(rule.defaults or {}))
+            links.append((url, rule.endpoint))
+    # links is now a list of url, endpoint tuples
+    response = {"links": links}
+    pprint(response)
+    return response
