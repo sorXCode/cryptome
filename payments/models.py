@@ -2,8 +2,9 @@ from app import db
 from datetime import datetime
 import sqlalchemy_jsonfield
 from sqlalchemy.dialects.sqlite import JSON
+from sqlalchemy import event
 
-class CompletedTransaction(db.Model):
+class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     event = db.Column(db.String, nullable=False)
     code = db.Column(db.String, nullable=False)
@@ -15,6 +16,7 @@ class CompletedTransaction(db.Model):
     webhook_data = db.Column(JSON)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime)
+    completed = db.Column(db.Boolean, default=False)
 
     def save(self):
         db.session.add(self)
@@ -26,5 +28,20 @@ class CompletedTransaction(db.Model):
     
     def set_webhook_data(self,webhook_data):
         self.webhook_data = webhook_data
+        self.completed = True
+        self.add_reward_for_referral()
         self.updated_at = datetime.now()
         self.save()
+
+    def add_reward_for_referral(self):
+        if not self.completed:
+            return None
+
+        from user.models import UserInvitation
+        invited_by = UserInvitation.get_referrer(self.user_id)
+
+        if not invited_by:
+            return None
+        
+        from rewards.models import Reward
+        Reward.create_entry(invited_by.id)

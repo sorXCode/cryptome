@@ -76,6 +76,9 @@ class User(db.Model, UserMixin):
     def get_user_by_email_or_username(cls, user_info):
         return cls.query.filter_by(email=user_info).first() or cls.query.filter_by(username=user_info).first()
 
+    @classmethod
+    def get_user_by_id(cls, user_id):
+        return cls.query.filter_by(id=user_id).first()
 
 @login_manager.user_loader
 def _load_user(token):
@@ -94,6 +97,26 @@ class UserInvitation(db.Model):
     token = db.Column(db.String(100), nullable=False, server_default='')
     invited_by_user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     
+    # TODO: 
+    # track if invite bonus has been given for user and disqualify 
+    # duplicate giving
+
+    @classmethod
+    def get_referrer(cls, user_id):
+        user = User.get_user_by_id(user_id)
+        
+        if not user:
+            return None
+        
+        user_invitation = cls.get_user_invitation(user.email)
+        if user_invitation:
+            return User.get_user_by_id(user_invitation.invited_by_user_id)
+        
+        return None
+    
+    @classmethod
+    def get_user_invitation(cls, email):
+        return cls.query.filter_by(email=email).first()
 
     def __repr__(self):
         return '<auth.UserInvitation(email="{}",on="{}")>'.format(

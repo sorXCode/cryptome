@@ -22,16 +22,19 @@
               checkout_id: "{{checkout['id']}}",
               user_id: "{{current_user.id}}"
             }
-            $.ajax("/subscriptions/log", {
+            $.ajax("/payments/log", {
                     data: JSON.stringify(_data),
                     method: "POST",
                     contentType: "application/json"
             })
           }
           
-        BuyWithCrypto.registerCallback("onComplete", function(data){
+        BuyWithCrypto.registerCallback("onSuccess", function(data){
           saveDetails(data)
-        })
+        });
+        BuyWithCrypto.registerCallback("onFailure", function(data) {
+          saveDetails(data)
+        });
       </script>
     {% else %}
       <p>This is the dashboard</p>
