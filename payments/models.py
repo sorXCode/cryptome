@@ -1,7 +1,7 @@
 from app import db
 from datetime import datetime
 import sqlalchemy_jsonfield
-
+from sqlalchemy.dialects.sqlite import JSON
 
 class CompletedTransaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -12,8 +12,7 @@ class CompletedTransaction(db.Model):
     currency = db.Column(db.String, nullable=False)
     checkout_id = db.Column(db.String, nullable=False)
     user_id = db.Column(db.String, nullable=False)
-    webhook_data = db.Column(sqlalchemy_jsonfield.JSONField(enforce_string=True,
-                                       enforce_unicode=False))
+    webhook_data = db.Column(JSON)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime)
 

@@ -21,11 +21,14 @@ def user_can_login(func, *args, **kwargs):
     def decorated_view(*args, **kwargs):
         if request.method == "POST":
             user = User.get_user_by_email_or_username(request.form["username"])
+            
             if user and user.can_be_logged_in():
                 return func(*args, **kwargs)
+            
             elif user and not user.can_be_logged_in():
                 flash("Please log out of other device")
-            return redirect(url_for('user.login'), 301)
+                return redirect(url_for('user.login'), 301)
+
         return func(*args, **kwargs)
     return decorated_view
 

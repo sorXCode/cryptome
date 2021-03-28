@@ -5,6 +5,8 @@ from app import login_manager
 from flask_user import PasswordManager
 from flask import current_app
 from uuid import uuid4
+from rewards.models import Reward
+from subscriptions.models import Subscription, SourceEnum
 
 
 def get_random_id():
@@ -38,8 +40,7 @@ class User(db.Model, UserMixin):
     refferal_code = db.Column(db.String, default=get_random_id)
 
     def has_active_subscription(self):
-        from subscriptions.models import Subscription
-        return self.subscription.filter(Subscription.ends >= datetime.today()).first()
+        return Subscription.has_active_subscription(self.id)
 
     def can_be_logged_in(self):
         if not self.is_logged_in:
@@ -61,6 +62,17 @@ class User(db.Model, UserMixin):
         db.session.add(self)
         db.session.commit()
 
+    def activate_reward_for_user_if_any(self):
+
+        reward = Reward.user_unused_reward(self.id)
+
+        if reward:
+            Subscription.create_monthly_subscription(user_id=self.id, source=SourceEnum.rewards)
+            reward.mark_as_used()
+        
+        return bool(reward)
+        
+
     @classmethod
     def get_user_by_email_or_username(cls, user_info):
         return cls.query.filter_by(email=user_info).first() or cls.query.filter_by(username=user_info).first()
@@ -80,8 +92,10 @@ class UserInvitation(db.Model):
     created_on = db.Column(db.DateTime(), server_default=db.func.now())
     # token used for registration page to identify user registering
     token = db.Column(db.String(100), nullable=False, server_default='')
-    invited_by = db.Column(db.Integer, db.ForeignKey("users.id"))
+    invited_by_user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
     def __repr__(self):
         return '<auth.UserInvitation(email="{}",on="{}")>'.format(
             self.email, self.created_on)
+
+

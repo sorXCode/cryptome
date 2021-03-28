@@ -1,41 +1,42 @@
 {% extends "flask_user_layout.html" %}
 {% block content %}
-    {% if not current_user.is_authenticated %}
-    <h2>{%trans%}Home page{%endtrans%}</h2>
-    <p><a href={{ url_for('user.register') }}>{%trans%}Register{%endtrans%}</a></p>
-    <p><a href={{ url_for('user.login') }}>{%trans%}Sign in{%endtrans%}</a></p>
-    {% elif not current_user.has_active_subscription() %}
-    <h2>{%trans%}You don't have an active subscription, click button below to subscribe{%endtrans%}</h2>
-    <div>
-        <a class="buy-with-crypto"
-           href="https://commerce.coinbase.com/checkout/{{ checkout['id'] }}">
-           {{ checkout['description'] }} {{ checkout['local_price']['amount'] }} {{  checkout['local_price']['currency'] }}
-          </a>
-          <script src="https://commerce.coinbase.com/v1/checkout.js?version=201807">
-          </script>
-        </div>
-      <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
-      <script>
-        saveDetails = (data) => {
-          const _data = {
-            ...data,
-            amount: "{{checkout['local_price']['amount']}}",
-            currency: "{{checkout['local_price']['currency']}}",
-            checkout_id: "{{checkout['id']}}",
-            user_id: "{{current_user.id}}"
+    {% if not current_user.has_active_subscription() %}
+      <div>
+        <h2>{%trans%}You don't have an active subscription, click button below to subscribe{%endtrans%}</h2>
+        <div>
+            <a class="buy-with-crypto"
+              href="https://commerce.coinbase.com/checkout/{{ checkout['id'] }}">
+              {{ checkout['description'] }} {{ checkout['local_price']['amount'] }} {{  checkout['local_price']['currency'] }}
+              </a>
+              <script src="https://commerce.coinbase.com/v1/checkout.js?version=201807">
+              </script>
+            </div>
+          </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+        <script>
+          saveDetails = (data) => {
+            const _data = {
+              ...data,
+              amount: "{{checkout['local_price']['amount']}}",
+              currency: "{{checkout['local_price']['currency']}}",
+              checkout_id: "{{checkout['id']}}",
+              user_id: "{{current_user.id}}"
+            }
+            $.ajax("/subscriptions/log", {
+                    data: JSON.stringify(_data),
+                    method: "POST",
+                    contentType: "application/json"
+            })
           }
-          $.ajax("/subscriptions/log", {
-                  data: JSON.stringify(_data),
-                  method: "POST",
-                  contentType: "application/json"
-          })
-        }
-        
-      BuyWithCrypto.registerCallback("onComplete", function(data){
-        saveDetails(data)
-      })
-    </script>
+          
+        BuyWithCrypto.registerCallback("onComplete", function(data){
+          saveDetails(data)
+        })
+      </script>
     {% else %}
-    <p>This is the dashboard</p>
+      <p>This is the dashboard</p>
     {% endif %}
+    <div>
+      <p style="float: right"><a href={{ url_for('user.invite_user') }}>{%trans%}Invite User{%endtrans%}</a></p>
+    </div>
     {% endblock %}
