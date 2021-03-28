@@ -43,6 +43,9 @@ class CustomUserManager(UserManager):
 @user.route("/")
 @login_required
 def index():
+    if not current_user.has_active_subscription():
+        current_user.activate_reward_for_user_if_any()
+
     checkout = None
     try:
         checkout = coinbase_client.checkout.retrieve(

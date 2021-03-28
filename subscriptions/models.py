@@ -25,8 +25,9 @@ class Subscription(db.Model):
         subscription.save()
         return subscription
     
-    def has_active_subscription(self, user_id):
-        return Subscription.query.filter(self.user_id==user_id, cls.ends >= datetime.today()).first()
+    @classmethod
+    def has_active_subscription(cls, user_id):
+        return Subscription.query.filter(cls.user_id==user_id, cls.ends >= datetime.today()).first()
     
     def save(self):
         db.session.add(self)
