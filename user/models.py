@@ -96,27 +96,43 @@ class UserInvitation(db.Model):
     # token used for registration page to identify user registering
     token = db.Column(db.String(100), nullable=False, server_default='')
     invited_by_user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    
-    # TODO: 
-    # track if invite bonus has been given for user and disqualify 
-    # duplicate giving
+    inviter_earned_reward = db.Column(db.Boolean, default=False)
 
     @classmethod
-    def get_referrer(cls, user_id):
+    def get_unrewarded_inviter(cls, user_id):
+        user_invitation = cls.get_user_invitation_by_user_id(user_id)
+
+        if user_invitation and not user_invitation.inviter_earned_reward:
+            return User.get_user_by_id(user_invitation.invited_by_user_id)
+        
+        return None
+        
+    
+    @classmethod
+    def get_user_invitation_by_user_id(cls, user_id):
+        # ensure user is registered
         user = User.get_user_by_id(user_id)
         
         if not user:
             return None
         
-        user_invitation = cls.get_user_invitation(user.email)
-        if user_invitation:
-            return User.get_user_by_id(user_invitation.invited_by_user_id)
-        
-        return None
+        user_invitation = cls.get_user_invitation(email=user.email)
+        return user_invitation
+
+    @classmethod
+    def get_user_invitation(cls, **kwargs):
+        return cls.query.filter_by(**kwargs).first()
     
     @classmethod
-    def get_user_invitation(cls, email):
-        return cls.query.filter_by(email=email).first()
+    def mark_invitation_as_rewarded(cls, user_id):
+        user_inviation = cls.get_user_invitation_by_user_id(user_id)
+        if not user_inviation:
+            return None
+
+        user_inviation.inviter_earned_reward = True
+        db.session.add(user_inviation)
+        db.session.commit()
+
 
     def __repr__(self):
         return '<auth.UserInvitation(email="{}",on="{}")>'.format(

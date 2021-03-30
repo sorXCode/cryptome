@@ -38,10 +38,11 @@ class Transaction(db.Model):
             return None
 
         from user.models import UserInvitation
-        invited_by = UserInvitation.get_referrer(self.user_id)
+        unrewarded_inviter = UserInvitation.get_unrewarded_inviter(self.user_id)
 
-        if not invited_by:
+        if not unrewarded_inviter:
             return None
         
         from rewards.models import Reward
-        Reward.create_entry(invited_by.id)
+        Reward.create_entry(unrewarded_inviter.id)
+        UserInvitation.mark_invitation_as_rewarded(user_id=self.user_id)
