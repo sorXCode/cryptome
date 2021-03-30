@@ -12,13 +12,11 @@ class Reward(db.Model):
     used_at = db.Column(db.DateTime)
     is_used = db.Column(db.Boolean, default=False)
 
-    __mapper_args__ = {
-        "order_by": created_at.desc()
-    }
 
     @classmethod
     def create_entry(cls, user_id):
-        latest_user_record = cls.query.filter_by(user_id=user_id).first()
+        # need to get newest entry: order_by => created_at.desc
+        latest_user_record = cls.query.filter_by(user_id=user_id).order_by(created_at.desc()).first()
 
         if latest_user_record and latest_user_record.completed < 3:
             latest_user_record.completed += 1
@@ -33,6 +31,7 @@ class Reward(db.Model):
 
     @classmethod
     def user_unused_reward(cls, user_id):
+        # need to get oldest unused reward: order_by => created_at
         return cls.query.filter_by(user_id=user_id, is_used=False, used_at=None, completed=3).order_by(cls.created_at).first()
 
     def mark_as_used(self):
