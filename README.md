@@ -1,4 +1,17 @@
-# FLASK USER MANAGEMENT APP
+# CRYPTOME
+
+## Features List
+
+- Registeration
+- Login
+- Account confirmation by Email
+- Single Session Per Account at Once
+- Logout
+- Profile
+- User Invitation by Email
+- Payment with Cryptocurrency [BTC, USDC, ETH, LTC, BCH, DAI]
+- Subscription
+- Referrer Reward
 
 ## Create and Activate Virtual Environment
 
@@ -17,7 +30,7 @@ pip install -r requirements.txt
 
 Sqlite3 database is used for this application. Database technology can be changed before actual deployment to any other SQL database e.g PostgreSQL
 
-## Running Note
+## Integrations
 
 All configuration values needed to make the application work are saved in the `.env` file. External credentials are also saved in the `.env`.
 
@@ -48,15 +61,8 @@ flask run
 
 Visit [http://localhost:5000](http://localhost:5000) in your browser to continue to the application.
 
-## Features List
+### Extra note
 
-- Registeration
-- Login
-- Account confirmation by Email
-- Single Login Per Account at Once
-- Logout
-- Profile
-- User Invitation by Email
-- Payment with Cryptocurrency [BTC, USDC, ETH, LIT]
-- Subscription
-- Referrer Reward
+If having issues with the payment modal not showing, check that your browser url domain is [http://localhost:5000](http://localhost:5000) and not [http://127.0.0.1:5000](http://127.0.0.1:5000).
+
+If domain is [http://127.0.0.1:5000](http://127.0.0.1:5000), log out before changing the domain in the browser, else you won't be able to login to a new session on [http://localhost:5000](http://localhost:5000)
