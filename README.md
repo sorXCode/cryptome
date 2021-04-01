@@ -55,7 +55,7 @@ flask db upgrade
 ## Run application
 
 ```shell
-export FLASK_APP=app
+set FLASK_APP=app
 flask run
 ```
 
@@ -66,3 +66,12 @@ Visit [http://localhost:5000](http://localhost:5000) in your browser to continue
 If having issues with the payment modal not showing, check that your browser url domain is [http://localhost:5000](http://localhost:5000) and not [http://127.0.0.1:5000](http://127.0.0.1:5000).
 
 If domain is [http://127.0.0.1:5000](http://127.0.0.1:5000), log out before changing the domain in the browser, else you won't be able to login to a new session on [http://localhost:5000](http://localhost:5000)
+
+### ---
+
+To run application in specific port and IP
+
+```shell
+set FLASK_APP=app
+flask run --host [ADDRESS or IP] --port [PORT]
+```
