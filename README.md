@@ -75,3 +75,66 @@ To run application in specific port and IP
 set FLASK_APP=app
 flask run --host [ADDRESS or IP] --port [PORT]
 ```
+
+## How to Setup Coinbase Account
+
+- Register or signin an account on [Coinbase](https://commerce.coinbase.com/). This will take you to your dashboard. ![dashboard](documentation/dashboard.png)
+
+- Click on "Checkouts" in the side menu. This will take you to a page where you can manage your inventories or products. Create a new checkout item as a product and select collect customer information at the final step
+
+<p align="center">
+
+<img src="documentation/create_product_A.png" width=30%>
+<img src="documentation/create_product_B.png" width=30%>
+<img src="documentation/create_product_C.png" width=30%>
+
+</p>
+
+- Copy the checkout ID in resulting page. The final part of the address is the product's/subscription's checkout ID. This checkout ID will be used in this application.
+
+<p align="center">
+
+<img src="documentation/checkout_item.png" width=50%>
+
+</p>
+
+- For example:
+
+    if address: [https://commerce.coinbase.com/checkout/2210b07a-6968-4202-941b-31bac11e6eb0](https://commerce.coinbase.com/checkout/2210b07a-6968-4202-941b-31bac11e6eb0)
+
+    checkout ID is: 2210b07a-6968-4202-941b-31bac11e6eb0
+
+- Goto [Coinbase Commerce Settings](https://commerce.coinbase.com/dashboard/settings) and scroll down to create an API KEY. Copy created API KEY.
+
+<p align="center">
+
+<img src="documentation/settings_page.png" width=50%>
+
+</p>
+
+- Scroll down to Webhook Subscriptions on the settings page and add [https://your-domain/payments/webhook](https://your-domain/payments/webhook) as a webhook endpoint and save. This endpoint exist on the created application. Ensure your server have HTTPS for this application.
+
+<p align="center">
+
+<img src="documentation/add_webhook_endpoint.png" width=50%>
+
+</p>
+
+- On the same page, click on `details` of the added endpoint and edit the endpoint's `Events`. Deselect all except charge:confirmed and save.
+
+<p align="center">
+
+<img src="documentation/webhook_page.png" width=30%>
+<img src="documentation/webhook_details.png" width=30%>
+<img src="documentation/webhook_events.png" width=30%>
+
+</p>
+
+### How To Configure Apllication To Use Created Coinbase Account Above
+
+- Edit the `.env` file and replace the following fields
+
+```shell
+COINBASE_APIKEY="Created APIKEY from above"
+COINBASE_CHECKOUT_ID="Created CheckoutID from above"
+```
