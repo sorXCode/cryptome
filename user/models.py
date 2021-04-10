@@ -62,6 +62,10 @@ class User(db.Model, UserMixin):
         db.session.add(self)
         db.session.commit()
 
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
     def activate_reward_for_user_if_any(self):
         print("Trying to activate")
         reward = Reward.user_unused_reward(self.id)

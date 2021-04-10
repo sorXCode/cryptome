@@ -23,10 +23,11 @@ login_manager = LoginManager()
 login_manager.login_view = "user.login"
 babel = Babel()
 coinbase_client = Client(os.environ["COINBASE_APIKEY"])
-
+user_manager  = None
 
 def create_app(environment):
     def init_dependencies(app):
+        global user_manager
         from user import models
         from user.views import CustomUserManager as UserManager
 
@@ -46,9 +47,11 @@ def create_app(environment):
     def register_blueprints(app):
         from user.views import user
         from payments.views import payment_bp
+        from commands import command_bp
 
         app.register_blueprint(user)
         app.register_blueprint(payment_bp)
+        app.register_blueprint(command_bp)
 
     app = Flask(__name__)
     app.config.from_object(config[environment])
