@@ -12,6 +12,7 @@
 - Payment with Cryptocurrency [BTC, USDC, ETH, LTC, BCH, DAI]
 - Subscription
 - Referrer Reward
+- Admin commands
 
 ## Create and Activate Virtual Environment
 
@@ -60,6 +61,15 @@ flask run
 ```
 
 Visit [http://localhost:5000](http://localhost:5000) in your browser to continue to the application.
+
+## Admin commands
+
+Admin can perform the following operation from the Command Line Interface.
+
+- Add User: `flask admin adduser`
+- Delete User: `flask admin deleteuser`
+- Reward User: `flask admin rewarduser`
+- Delete User Reward: `flask admin deletereward`
 
 ### Extra note
 
