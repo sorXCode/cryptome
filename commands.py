@@ -64,6 +64,19 @@ def reward_user(identity):
     else:
         click.echo("User Not Found")
 
+@command_bp.cli.command('rewardall')
+@click.option('--yes', is_flag=True, callback=abort_if_false,
+              expose_value=False,
+              prompt='Are you sure you want to reward all users?')
+def reward_user():
+    users = User.all()
+    for user in users:
+        reward = Reward(user_id=user.id, completed=3, created_at=datetime.now())
+        reward.save()
+        click.echo(f"{user.email} Rewarded!")
+    
+    click.echo(f"All Users Rewarded!")
+
 @command_bp.cli.command('deletereward')
 @click.option('--identity', prompt="Enter user's email or username")
 @click.option('--yes', is_flag=True, callback=abort_if_false,

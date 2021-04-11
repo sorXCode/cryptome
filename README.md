@@ -68,6 +68,7 @@ Admin can perform the following operation from the Command Line Interface.
 
 - Add User: `flask admin adduser`
 - Delete User: `flask admin deleteuser`
+- Reward All Users: `flask admin rewardall`
 - Reward User: `flask admin rewarduser`
 - Delete User Reward: `flask admin deletereward`
 

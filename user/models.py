@@ -39,6 +39,10 @@ class User(db.Model, UserMixin):
     last_login = db.Column(db.DateTime)
     refferal_code = db.Column(db.String, default=get_random_id)
 
+    @classmethod
+    def all(cls):
+        return cls.query.filter_by().all()
+
     def has_active_subscription(self):
         return Subscription.has_active_subscription(self.id)
 
