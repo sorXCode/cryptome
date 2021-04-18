@@ -71,6 +71,7 @@ Admin can perform the following operation from the Command Line Interface.
 - Reward All Users: `flask admin rewardall`
 - Reward User: `flask admin rewarduser`
 - Delete User Reward: `flask admin deletereward`
+- Mail All Users: `flask admin mailall`
 
 ### Extra note
 
