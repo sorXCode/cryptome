@@ -92,7 +92,8 @@ class User(db.Model, UserMixin):
 def _load_user(token):
     # return None
     user = User.get_user_by_token(token)
-    user.update_last_login()
+    if user:
+        user.update_last_login()
     return user
 
 

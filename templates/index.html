@@ -11,7 +11,7 @@
               <script src="https://commerce.coinbase.com/v1/checkout.js?version=201807">
               </script>
             </div>
-          </div>
+        </div>
         <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
         <script>
           saveDetails = (data) => {
@@ -41,7 +41,4 @@
       <p>This is the dashboard</p>
     </div>
     {% endif %}
-    <div>
-      <p style="float: right"><a href={{ url_for('user.invite_user') }}>{%trans%}Invite User{%endtrans%}</a></p>
-    </div>
     {% endblock %}
