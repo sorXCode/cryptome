@@ -37,7 +37,9 @@
         });
       </script>
     {% else %}
+    <div>
       <p>This is the dashboard</p>
+    </div>
     {% endif %}
     <div>
       <p style="float: right"><a href={{ url_for('user.invite_user') }}>{%trans%}Invite User{%endtrans%}</a></p>
