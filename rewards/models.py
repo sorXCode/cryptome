@@ -30,10 +30,12 @@ class Reward(db.Model):
         return latest_user_record
 
     @classmethod
-    def user_unused_reward(cls, user_id):
+    def user_unused_reward(cls, user_id, all=False):
         # need to get oldest unused reward: order_by => created_at
+        if all:
+            return cls.query.filter_by(user_id=user_id, is_used=False, used_at=None, completed=3).order_by(cls.created_at).all()
         return cls.query.filter_by(user_id=user_id, is_used=False, used_at=None, completed=3).order_by(cls.created_at).first()
-
+    
     def mark_as_used(self):
         self.used_at = datetime.now()
         self.is_used = True

@@ -142,6 +142,11 @@ class UserInvitation(db.Model):
         db.session.add(user_inviation)
         db.session.commit()
 
+    
+    @classmethod
+    def get_invited_users_for_user_id(cls, user_id):
+        return cls.query.filter_by(invited_by_user_id=user_id).all()
+
 
     def __repr__(self):
         return '<auth.UserInvitation(email="{}",on="{}")>'.format(

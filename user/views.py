@@ -9,7 +9,8 @@ from flask_login import (current_user, login_manager, login_required,
 from flask_user.forms import LoginForm
 from is_safe_url import is_safe_url
 from flask_user import UserManager
-from .models import User
+from .models import User, UserInvitation
+from rewards.models import Reward
 from functools import wraps
 
 user = Blueprint("user", __name__)
@@ -56,6 +57,14 @@ def index():
     if not checkout:
         abort(404, "Invalid checkout")
     return render_template("index.html", checkout=checkout)
+
+
+@user.route("/profile")
+@login_required
+def profile():
+    referrals = UserInvitation.get_invited_users_for_user_id(current_user.id)
+    unused_rewards = Reward.user_unused_reward(current_user.id, all=True)
+    return render_template("profile.html", referrals=referrals, rewards=unused_rewards)
 
 
 {'links': [('/user/resend-email-confirmation',
