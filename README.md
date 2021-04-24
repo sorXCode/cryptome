@@ -73,6 +73,42 @@ Admin can perform the following operation from the Command Line Interface.
 - Delete User Reward: `flask admin deletereward`
 - Mail All Users: `flask admin mailall`
 
+## Pages
+
+There three default table pages, to load these tables save the json files to `/static/data`. The files must be names `page1.json`, `page2.json`, and `page3.json` for respective pages.
+
+A sample schema for this json file is:
+
+```json
+{
+"Markets":[
+  {
+    "market":"BTC/USDT", 
+    "stats":"stats",
+    "info":"info",
+    "positive": 0,
+    "negative": 0
+  },
+  {
+    "market":"ETH/USDT", 
+    "stats":"stats",
+    "info":"info",
+    "positive": 0,
+    "negative": 0
+  },
+  {
+    "market":"LTC/USDT", 
+    "stats":"stats",
+    "info":"info",
+    "positive": 0,
+    "negative": 0
+  }
+]
+}
+```
+
+The table is fully dynamic; the column name and title are automatically picked from the json file.
+
 ### Extra note
 
 If having issues with the payment modal not showing, check that your browser url domain is [http://localhost:5000](http://localhost:5000) and not [http://127.0.0.1:5000](http://127.0.0.1:5000).
