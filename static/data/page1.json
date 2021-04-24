@@ -1,0 +1,25 @@
+{
+"Markets":[
+  {
+    "market":"BTC/USDT", 
+    "stats":"stats",
+    "info":"info",
+    "positive": 0,
+    "negative": 0
+  },
+  {
+    "market":"ETH/USDT", 
+    "stats":"stats",
+    "info":"info",
+    "positive": 0,
+    "negative": 0
+  },
+  {
+    "market":"LTC/USDT", 
+    "stats":"stats",
+    "info":"info",
+    "positive": 0,
+    "negative": 0
+  }
+]
+}

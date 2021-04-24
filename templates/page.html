@@ -8,12 +8,12 @@
   .white {
     background-color: white;
   }
-  .gray {
+  .bisque {
     background-color: bisque;
   }
   .data_table {
-    width: 1280px  !important;
-    float: left !important;
+    width: 80%  !important;
+    margin-left: 10%;
 }
 </style>
 
@@ -24,41 +24,24 @@
 {% block content %}
 <div class="data_table">
   <table style="width: 100%" border="0">
+      <caption>{{title}}</caption>
     <thead>
       <tr>
         <th>#</th>
-        <th>Market</th>
-        <th>Stats</th>
-        <th>Info</th>
-        <th>Positive</th>
-        <th colspan="2%">Negative</th>
-      </tr>
-    </thead>
+        {% for heading in headings %}
+        <th>{{heading|title}}</th>
+        {% endfor %}
+    </tr>
+</thead>
 
-    <tr class="white">
-      <td>1</td>
-      <td>BTC/USDT</td>
-      <td>stats</td>
-      <td>info</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr class="gray">
-      <td>2</td>
-      <td>ETH/USDT</td>
-      <td>stats</td>
-      <td>info</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr class="white">
-      <td>3</td>
-      <td>LTC/USDT</td>
-      <td>stats</td>
-      <td>info</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
+    {% for row in rows %}
+    <tr class="{{ loop.cycle('white', 'bisque') }}">
+        <td>{{loop.index}}</td>
+        {% for value in row.values() %}
+            <td>{{value}}</td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
   </table>
 </div>
 {% endblock %}
