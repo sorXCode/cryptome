@@ -10,17 +10,20 @@
         <a href="{{ url_for('user.login') }}">{%trans%}Sign in{%endtrans%}</a>
     {% endif %}
 </div>
-<ul class="nav nav-pills navbar-left nav-stacked">
-    {% for index in range(1,4) %}
+<div class="pages_navigation">
+    <ul class="nav nav-pills navbar-left nav-stacked">
+        {% for index in range(1,4) %}
         <li class="{{ 'active' if request.path.split('/')[-1]==index|string else ''}}"><a href="{{url_for('page_bp.get_page', id=index )}}">Page {{index}}</li></a>
-    {% endfor %}
-</ul>
+        {% endfor %}
+    </ul>
+</div>
+
 <div class="container">
     <div class="row">
         {% block responsiveness %}
-            <div class="col-sm-7 col-md-6 col-lg-5 col-centered">
-                {% block content %}{% endblock %}
-            </div>
+        <div class="col-sm-7 col-md-6 col-lg-5 col-centered">
+            {% block content %}{% endblock %}
+        </div>
         {% endblock %}
     </div>
 </div>
