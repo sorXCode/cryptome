@@ -48,10 +48,12 @@ def create_app(environment):
         from user.views import user
         from payments.views import payment_bp
         from commands import command_bp
+        from pages.views import page_bp
 
         app.register_blueprint(user)
         app.register_blueprint(payment_bp)
         app.register_blueprint(command_bp)
+        app.register_blueprint(page_bp)
 
     app = Flask(__name__)
     app.config.from_object(config[environment])

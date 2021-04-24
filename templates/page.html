@@ -1,0 +1,65 @@
+{% extends "flask_user/_authorized_base.html" %} {% block extra_styles %}
+<style>
+  th {
+    border: 1px solid ghostwhite 0.6px;
+    background-color: darkgrey;
+  }
+
+  .white {
+    background-color: white;
+  }
+  .gray {
+    background-color: bisque;
+  }
+  .data_table {
+    width: 1280px  !important;
+    float: left !important;
+}
+</style>
+
+{% endblock %}
+
+{% block responsiveness %}
+
+{% block content %}
+<div class="data_table">
+  <table style="width: 100%" border="0">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Market</th>
+        <th>Stats</th>
+        <th>Info</th>
+        <th>Positive</th>
+        <th colspan="2%">Negative</th>
+      </tr>
+    </thead>
+
+    <tr class="white">
+      <td>1</td>
+      <td>BTC/USDT</td>
+      <td>stats</td>
+      <td>info</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr class="gray">
+      <td>2</td>
+      <td>ETH/USDT</td>
+      <td>stats</td>
+      <td>info</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr class="white">
+      <td>3</td>
+      <td>LTC/USDT</td>
+      <td>stats</td>
+      <td>info</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </table>
+</div>
+{% endblock %}
+{% endblock %}

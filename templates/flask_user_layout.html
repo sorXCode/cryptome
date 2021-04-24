@@ -16,7 +16,7 @@
         .with-margins { margin: 10px; }
         .col-centered { float: none; margin: 0 auto; }
     </style>
-
+    {% block extra_styles %}{% endblock %}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -36,8 +36,6 @@
         <div class="pull-right">
             {% if call_or_get(current_user.is_authenticated) %}
                 <img src="{{ url_for('static', filename='img/profile-picture.png') }}" alt="profile-picture" srcset="" width="50px">
-            {% else %}
-                <a href="{{ url_for('user.login') }}">{%trans%}Sign in{%endtrans%}</a>
             {% endif %}
         </div>
     </div>
@@ -62,15 +60,6 @@
     {% endblock %}
 
     {% block main %}
-        <div class="pull-right">
-            {% if call_or_get(current_user.is_authenticated) %}
-                <a href="{{ url_for('user.profile') }}">{{ current_user.username or current_user.email }}</a><br>
-                <a href={{ url_for('user.invite_user') }}>{%trans%}Invite User{%endtrans%}</a><br>
-                <a href="{{ url_for('user.logout') }}">{%trans%}Sign out{%endtrans%}</a>
-            {% else %}
-                <a href="{{ url_for('user.login') }}">{%trans%}Sign in{%endtrans%}</a>
-            {% endif %}
-        </div>
         <br>
         <br>
         <br>
