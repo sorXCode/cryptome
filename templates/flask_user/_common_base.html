@@ -10,6 +10,7 @@
         <a href="{{ url_for('user.login') }}">{%trans%}Sign in{%endtrans%}</a>
     {% endif %}
 </div>
+{% if call_or_get(current_user.is_authenticated) %}
 <div class="pages_navigation">
     <ul class="nav nav-pills navbar-left nav-stacked">
         {% for index in range(1,4) %}
@@ -17,6 +18,7 @@
         {% endfor %}
     </ul>
 </div>
+{% endif %}
 
 <div class="container">
     <div class="row">

@@ -1,10 +1,12 @@
 from flask import (Blueprint, abort, current_app, flash, redirect,
                    render_template, render_template_string, request, url_for, request)
+from flask_user import login_required
 import json, os
 from pprint import pprint
 page_bp = Blueprint("page_bp", __name__, url_prefix="/pages")
 
 @page_bp.route("/<int:id>")
+@login_required
 def get_page(id):
     file_path = f"static/data/page{id}.json"
 
