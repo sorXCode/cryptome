@@ -38,7 +38,18 @@
 <body>
     {% block body %}
     <div id="header-div" class="clearfix with-margins">
-        <div class="pull-left"><a href="/"><h1 class="no-margins">{{ user_manager.USER_APP_NAME }}</h1></a></div>
+        <div class="pull-left"><a href="/"><h1 class="no-margins">{{ user_manager.USER_APP_NAME }}</h1></a>
+            {% if call_or_get(current_user.is_authenticated) %}
+            <div class="no-margins">
+                <ul class="nav nav-pills navbar-left">
+                    {% for index in range(1,4) %}
+                    <li class="{{ 'active' if request.path.split('/')[-1]==index|string else ''}}"><a href="{{url_for('page_bp.get_page', id=index )}}">Page {{index}}</li></a>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+    
+        </div>
         <div class="pull-right">
             {% if call_or_get(current_user.is_authenticated) %}
                 <img src="{{ url_for('static', filename='img/profile-picture.png') }}" alt="profile-picture" srcset="" width="50px">
