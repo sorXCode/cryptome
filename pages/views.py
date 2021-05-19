@@ -15,9 +15,10 @@ def get_page(id):
     if not os.path.exists(file_path):
         return render_template("page.html")
 
+    # supported types are [scalping, intraday and swing]
     json_data = json.load(open(file_path))
     pprint(json_data)
     title = list(json_data.keys())[0]
     rows = json_data[title]
     headings = rows[0].keys()
-    return render_template("page.html", title=title, rows=rows, headings=headings)
+    return render_template("page.html", title=title, rows=rows, headings=headings, json_data=json_data)

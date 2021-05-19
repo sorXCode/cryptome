@@ -1,0 +1,28 @@
+{
+    "Title Name 02": [
+      {
+        "market": "BTC/USDT",
+        "stats": "statsx",
+        "info": "infox",
+        "type":"scalping",
+        "positive": 0,
+        "negative": 0
+      },
+      {
+        "market": "ETH/USDTx",
+        "stats": "statsx",
+        "info": "infox",
+        "type":"intraday",
+        "positive": 0,
+        "negative": 0
+      },
+      {
+        "market": "LTC/USDTx",
+        "stats": "statsx",
+        "info": "infox",
+        "type":"swing",
+        "positive": 0,
+        "negative": 0
+      }
+    ]
+  }

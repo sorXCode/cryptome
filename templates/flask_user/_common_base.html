@@ -1,17 +1,6 @@
 {% extends "flask_user_layout.html" %}
 
 {% block main %}
-<div class="pull-right">
-    {% if call_or_get(current_user.is_authenticated) %}
-        <a href="{{ url_for('user.profile') }}">{{ current_user.username or current_user.email }}</a><br>
-        <a href={{ url_for('user.invite_user') }}>{%trans%}Invite User{%endtrans%}</a><br>
-        <a href="{{ url_for('user.logout') }}">{%trans%}Sign out{%endtrans%}</a>
-    {% else %}
-        <a href="{{ url_for('user.login') }}">{%trans%}Sign in{%endtrans%}</a>
-    {% endif %}
-</div>
-
-
 <div class="container">
     <div class="row">
         {% block responsiveness %}

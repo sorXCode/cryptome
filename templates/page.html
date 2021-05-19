@@ -46,3 +46,40 @@
 </div>
 {% endblock %}
 {% endblock %}
+
+{% block extra_js %}
+
+var json = {{json_data}}
+var title = {{title}}
+console.log(`JSON->\t${json}`)
+console.log(`title->\t${title}`)
+
+function sortJsonField(field){
+
+    function sortJson(a,b){
+        if(field == "market"){ return a.market > b.market? 1 : -1; }else
+        if(field == "stats"){ return a.stats > b.stats? 1 : -1; }else
+        if(field == "info"){ return a.info > b.info? 1 : -1; }else
+        if(field == "type"){ return a.type > b.type? 1 : -1; }else
+        if(field == "positive"){ return a.positive > b.positive? 1 : -1; }else
+        if(field == "negative"){ return a.negative > b.negative? 1 : -1; }else
+        return a.market > b.market? 1 : -1;
+    }
+
+    // No need to assign this to a new array.
+    json[title].sort(sortJson);
+
+    showJSON();
+};
+
+function showJSON(){
+
+    // May empty the ul/ol before doing this? up to you..
+    $.each(json.users,function(i,row){ 
+        $("#output").append(
+            '<li>' + row.id + row.name + row.job + '</li>'
+        );
+    });
+
+};
+{% endblock %}
