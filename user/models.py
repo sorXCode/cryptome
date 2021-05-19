@@ -27,7 +27,7 @@ class User(db.Model, UserMixin):
                       nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False, server_default='')
     email_confirmed_at = db.Column(db.DateTime())
-
+    profile_picture = db.Column(db.String(255))
     # User information
     first_name = db.Column(db.String(100, collation='NOCASE'),
                            nullable=True, server_default='')

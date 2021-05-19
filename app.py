@@ -22,6 +22,7 @@ db = SQLAlchemy()
 login_manager = LoginManager()
 login_manager.login_view = "user.login"
 babel = Babel()
+
 coinbase_client = Client(os.environ["COINBASE_APIKEY"])
 user_manager  = None
 
@@ -45,7 +46,7 @@ def create_app(environment):
         user_manager.email_adapter = SendgridEmailAdapter(app)
 
     def register_blueprints(app):
-        from user.views import user
+        from user.views import user, profile_picture
         from payments.views import payment_bp
         from commands import command_bp
         from pages.views import page_bp
@@ -54,6 +55,7 @@ def create_app(environment):
         app.register_blueprint(payment_bp)
         app.register_blueprint(command_bp)
         app.register_blueprint(page_bp)
+        app.jinja_env.globals.update(profile_picture=profile_picture)
 
     app = Flask(__name__)
     app.config.from_object(config[environment])

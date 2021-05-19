@@ -53,7 +53,7 @@
         <div class="pull-right dropdown">
             {% if call_or_get(current_user.is_authenticated) %}
             <a class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <p><img src="{{ url_for('static', filename='img/profile-picture.png') }}" alt="profile-picture" srcset="" width="50px"><span class="caret"></span></p>
+                <p><img src="{{ current_user.profile_picture }}" alt="profile-picture" srcset="" width="50px"><span class="caret"></span></p>
             </a>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                   <li><a href="{{ url_for('user.profile') }}">{{ current_user.username or current_user.email }}</a></li>
