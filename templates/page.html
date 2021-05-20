@@ -12,38 +12,37 @@
     background-color: bisque;
   }
   .data_table {
-    width: 80%  !important;
+    width: 80% !important;
     margin-left: 10%;
-}
+  }
+  .clickable {
+    cursor: pointer;
+  }
 </style>
 
-{% endblock %}
-
-{% block responsiveness %}
-
-{% block content %}
+{% endblock %} {% block responsiveness %} {% block content %}
 <div class="data_table">
   <table style="width: 100%" border="0">
-      <caption>{{title or "not found"}}</caption>
+    <caption>
+      {{title or "not found"}}
+    </caption>
     <thead>
       <tr>
         <th>#</th>
         {% for heading in headings %}
-        <th onclick="filter_rows('{{heading}}')">{{heading|title}}<span class="caret"></span></th>
+        <th onclick="filter_rows('{{heading}}')">{{heading|title}}<span class="caret"></span>
+        </th>
         {% endfor %}
-    </tr>
-</thead>
-<tbody id="tbody">
-  
-</tbody>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
   </table>
 </div>
-{% endblock %}
-{% endblock %}
-
-{% block extra_js %}
+<div id="tradingview"></div>
+{% endblock %} {% endblock %} {% block extra_js %}
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 <script>
-  function filter_rows(field=null) {
+  function filter_rows(field) {
     function sortJson(a,b){
       if(field == "market"){ return a.market > b.market? 1 : -1; }else
       if(field == "stats"){ return a.stats > b.stats? 1 : -1; }else
@@ -54,15 +53,17 @@
       return a.market > b.market? 1 : -1;
   }
 
-    function showJson(){
+    function showRow(){
       $("#tbody").html("");
       $.each(rows, (i, row)=>{
         let backgroundColor = i%2? "bisque":"white"
+        let tradingViewArgs = row.tradingview
+        console.log(tradingViewArgs)
         $("#tbody").append(
 
         `hel<tr class=${backgroundColor}>
           <td>${i+1}</td>
-          <td>${row.market}</td>
+          <td class="clickable" id="tv" onclick='showTradingView(${tradingViewArgs})'>${row.market}</td>
           <td>${row.stats}</td>
           <td>${row.info}</td>
           <td>${row.type}</td>
@@ -75,10 +76,17 @@
 
   let rows = {{ rows|safe }}
   rows.sort(sortJson);
-  showJson()
+  showRow()
   return rows;
+  
   }
 
-  filter_rows()
+  var showTradingView = (args) => {
+    console.log(args)
+    new TradingView.widget(args);
+  };
+
+filter_rows();
 </script>
+  
 {% endblock %}

@@ -1,5 +1,6 @@
 from flask import (Blueprint, abort, current_app, flash, redirect,
-                   render_template, render_template_string, request, url_for, request)
+                   render_template, render_template_string, request, url_for, request,
+                   jsonify)
 from flask_user import login_required
 from subscriptions.utils import subscription_required
 import json
@@ -19,8 +20,29 @@ def get_page(id):
 
     # supported types are [scalping, intraday and swing]
     json_data = json.load(open(file_path))
-    pprint(json_data)
     title = list(json_data.keys())[0]
-    rows = json_data[title]
-    headings = rows[0].keys()
+    rows = list(json_data[title])
+    intervals = {
+        "scalping": "5",
+        "intraday": "60",
+        "swing": "240",
+    }
+    headings = list(rows[0].keys())
+    for row in rows:
+        row["tradingview"] = json.dumps({
+            "width": 980,
+            "height": 610,
+            "symbol": f"BINANCE:{row['market'].replace('/','')}",
+            "interval": f"{intervals[row['type']]}",
+            "timezone": "Etc/UTC",
+            "theme": "light",
+            "style": "1",
+            "locale": "en",
+            "toolbar_bg": "#f1f3f6",
+            "enable_publishing": False,
+            "allow_symbol_change": True,
+            "container_id": "tradingview"
+        })
+    pprint(rows)
+    # pprint(rows)
     return render_template("page.html", title=title, rows=rows, headings=headings, json_data=json_data)
