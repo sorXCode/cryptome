@@ -99,15 +99,6 @@ def profile():
     unused_rewards = Reward.user_unused_reward(current_user.id, all=True)
     return render_template("profile.html", referrals=referrals, rewards=unused_rewards)
 
-
-@login_required
-def profile_picture():
-    public_id, picture_format = current_user.profile_picture.split(".")
-    url, options = cloudinary_url(
-        public_id,
-        format=picture_format
-    )
-    return url
 # {'links': [('/user/resend-email-confirmation',
 #             'user.resend_email_confirmation'),
 #            ('/user/edit_user_profile', 'user.edit_user_profile'),

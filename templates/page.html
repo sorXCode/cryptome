@@ -29,57 +29,56 @@
       <tr>
         <th>#</th>
         {% for heading in headings %}
-        <th>{{heading|title}}</th>
+        <th onclick="filter_rows('{{heading}}')">{{heading|title}}<span class="caret"></span></th>
         {% endfor %}
     </tr>
 </thead>
-
-    {% for row in rows %}
-    <tr class="{{ loop.cycle('white', 'bisque') }}">
-        <td>{{loop.index}}</td>
-        {% for value in row.values() %}
-            <td>{{value}}</td>
-        {% endfor %}
-        </tr>
-    {% endfor %}
+<tbody id="tbody">
+  
+</tbody>
   </table>
 </div>
 {% endblock %}
 {% endblock %}
 
 {% block extra_js %}
-
-var json = {{json_data}}
-var title = {{title}}
-console.log(`JSON->\t${json}`)
-console.log(`title->\t${title}`)
-
-function sortJsonField(field){
-
+<script>
+  function filter_rows(field=null) {
     function sortJson(a,b){
-        if(field == "market"){ return a.market > b.market? 1 : -1; }else
-        if(field == "stats"){ return a.stats > b.stats? 1 : -1; }else
-        if(field == "info"){ return a.info > b.info? 1 : -1; }else
-        if(field == "type"){ return a.type > b.type? 1 : -1; }else
-        if(field == "positive"){ return a.positive > b.positive? 1 : -1; }else
-        if(field == "negative"){ return a.negative > b.negative? 1 : -1; }else
-        return a.market > b.market? 1 : -1;
+      if(field == "market"){ return a.market > b.market? 1 : -1; }else
+      if(field == "stats"){ return a.stats > b.stats? 1 : -1; }else
+      if(field == "info"){ return a.info > b.info? 1 : -1; }else
+      if(field == "type"){ return a.type > b.type? 1 : -1; }else
+      if(field == "positive"){ return a.positive > b.positive? 1 : -1; }else
+      if(field == "negative"){ return a.negative > b.negative? 1 : -1; }else
+      return a.market > b.market? 1 : -1;
+  }
+
+    function showJson(){
+      $("#tbody").html("");
+      $.each(rows, (i, row)=>{
+        let backgroundColor = i%2? "bisque":"white"
+        $("#tbody").append(
+
+        `hel<tr class=${backgroundColor}>
+          <td>${i+1}</td>
+          <td>${row.market}</td>
+          <td>${row.stats}</td>
+          <td>${row.info}</td>
+          <td>${row.type}</td>
+          <td>${row.positive}</td>
+          <td>${row.negative}</td>
+        </tr>`
+        )
+      })
     }
 
-    // No need to assign this to a new array.
-    json[title].sort(sortJson);
+  let rows = {{ rows|safe }}
+  rows.sort(sortJson);
+  showJson()
+  return rows;
+  }
 
-    showJSON();
-};
-
-function showJSON(){
-
-    // May empty the ul/ol before doing this? up to you..
-    $.each(json.users,function(i,row){ 
-        $("#output").append(
-            '<li>' + row.id + row.name + row.job + '</li>'
-        );
-    });
-
-};
+  filter_rows()
+</script>
 {% endblock %}

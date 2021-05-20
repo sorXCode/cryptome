@@ -2,9 +2,11 @@ from flask import (Blueprint, abort, current_app, flash, redirect,
                    render_template, render_template_string, request, url_for, request)
 from flask_user import login_required
 from subscriptions.utils import subscription_required
-import json, os
+import json
+import os
 from pprint import pprint
 page_bp = Blueprint("page_bp", __name__, url_prefix="/pages")
+
 
 @page_bp.route("/<int:id>")
 @login_required
